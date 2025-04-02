@@ -1,0 +1,125 @@
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using RoomRevAPI.Models;
+
+namespace RoomRevAPI.Services
+{
+    /// <summary>
+    /// This class manages the monog db creation and others i guess
+    /// </summary>
+    public class MainController
+    {
+        private readonly IMongoDatabase _database;
+        private readonly IConfiguration _configuration;
+
+        // ✅ MongoDB Collections
+        public IMongoCollection<MeetingRooms> MeetingRooms => _database.GetCollection<MeetingRooms>("MeetingRooms");
+        public IMongoCollection<Reservers> Reservers => _database.GetCollection<Reservers>("Reservers");
+        public IMongoCollection<Reservations> Reservations => _database.GetCollection<Reservations>("Reservations");
+
+        // ✅ Constructor Fix
+        public MainController(MongoClient client, IMongoDatabase database, IConfiguration configuration)
+        {
+            _database = database;
+            _configuration = configuration;
+            //InitializeDatabase();   used for connection test
+            SchemaCreator();
+            //TestInserter();
+            //DMlSettings(configuration); commented out for reasons
+        }
+        public void SchemaCreator()
+        {
+            var requiredCollections = new List<string> { "MeetingRooms", "Reservations", "Reservers" };
+            var existingCollections = _database.ListCollectionNames().ToList();
+
+            Console.WriteLine($"Checking and creating schemas...");
+
+            foreach (var collectionName in requiredCollections)
+            {
+                if (!existingCollections.Contains(collectionName)) // ✅ Create only if it doesn't exist
+                {
+                    Console.WriteLine($"Creating schema for {collectionName}...");
+
+                    var validator = GetValidatorForCollection(collectionName); // ✅ Define schema for the collection
+
+                    var options = new CreateCollectionOptions<BsonDocument>
+                    {
+                        Validator = new BsonDocumentFilterDefinition<BsonDocument>(validator),
+                    };
+
+                    _database.CreateCollection(collectionName, options);
+
+                    Console.WriteLine($"Schema for {collectionName} created successfully.");
+                }
+                else
+                {
+                    Console.WriteLine($"Collection '{collectionName}' already exists. Skipping creation.");
+                }
+            }
+        }
+
+        private BsonDocument GetValidatorForCollection(string collectionName)
+        {
+            return collectionName switch
+            {
+                "MeetingRooms" => new BsonDocument
+        {
+            { "$jsonSchema", new BsonDocument
+                {
+                    { "bsonType", "object" },
+                    { "required", new BsonArray { "RoomRevNr", "Availability", "Capacity", "RoomName" } },
+                    { "properties", new BsonDocument
+                        {
+                            { "RoomRevNr", new BsonDocument { { "bsonType", "string" }, { "description", "'RoomRevNr' must be a String and is required" } } },
+                            { "Availability", new BsonDocument { { "bsonType", "bool" }, { "description", "'Availability' must be a Boolean and is required" } } },
+                            { "Capacity", new BsonDocument { { "bsonType", "int" }, { "description", "'Capacity' must be an Integer and is required" } } },
+                            { "RoomName", new BsonDocument { { "bsonType", "string" }, { "description", "'RoomName' must be a String and is required" } } },
+                            { "Tools", new BsonDocument { { "bsonType", "array" }, { "description", "'Tools' must be an Array of Tool objects" } } }
+                        }
+                    }
+                }
+            }
+        },
+
+                "Reservations" => new BsonDocument
+        {
+            { "$jsonSchema", new BsonDocument
+                {
+                    { "bsonType", "object" },
+                    { "required", new BsonArray { "RevRoomMet", "RevNr", "RoomRevNr", "StartTime", "EndTime" } },
+                    { "properties", new BsonDocument
+                        {
+                            { "RevRoomMet", new BsonDocument { { "bsonType", "string" }, { "description", "'RevRoomMet' must be a String and is required" } } },
+                            { "RevNr", new BsonDocument { { "bsonType", "string" }, { "description", "'RevNr' must be a String and is required" } } },
+                            { "RoomRevNr", new BsonDocument { { "bsonType", "string" }, { "description", "'RoomRevNr' must be a String and is required" } } },
+                            { "StartTime", new BsonDocument { { "bsonType", "date" }, { "description", "'StartTime' must be a Date and is required" } } },
+                            { "EndTime", new BsonDocument { { "bsonType", "date" }, { "description", "'EndTime' must be a Date and is required" } } },
+                            { "Reason", new BsonDocument { { "bsonType", "string" }, { "maxLength", 50 }, { "description", "'Reason' must be a String" } } },
+                        }
+                    }
+                }
+            }
+        },
+
+                "Reservers" => new BsonDocument
+        {
+            { "$jsonSchema", new BsonDocument
+                {
+                    { "bsonType", "object" },
+                    { "required", new BsonArray { "RevNr", "Name" } },
+                    { "properties", new BsonDocument
+                        {
+                            { "RevNr", new BsonDocument { { "bsonType", "string" }, { "description", "'RevNr' must be a String and is required" } } },
+                            { "Name", new BsonDocument { { "bsonType", "string" }, { "description", "'Name' must be a String and is required" } } }
+                        }
+                    }
+                }
+            }
+        },
+
+                _ => new BsonDocument() // ✅ Default empty schema
+            };
+        }
+
+    }
+}
