@@ -7,8 +7,7 @@ namespace RoomRevAPI.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.String)]
-        [BsonElement("RoomRevNr")]
-        public Guid RoomRevNr { get; set; }
+        public Guid RoomRevNr { get; set; } = Guid.NewGuid();
 
         [BsonElement("Availability")]
         public bool Availability { get; set; }
@@ -19,8 +18,8 @@ namespace RoomRevAPI.Models
         [BsonElement("RoomName")]
         public string? RoomName { get; set; }
 
-        [BsonElement("Tools")]
-        public List<Tools>? Tools { get; set; } = new List<Tools>();
+        [BsonElement("Equipment")]
+        public List<Tools>? Equipment { get; set; } = new List<Tools>();
 
         [BsonIgnore]
         public ICollection<Reservations> Reservations { get; set; } = new List<Reservations>();

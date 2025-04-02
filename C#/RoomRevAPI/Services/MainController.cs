@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using RoomRevAPI.Models;
+using System.Collections.Generic;
 
 namespace RoomRevAPI.Services
 {
@@ -24,9 +25,32 @@ namespace RoomRevAPI.Services
             _configuration = configuration;
             //InitializeDatabase();   used for connection test
             SchemaCreator();
-            //TestInserter();
+            TestInserter();
             //DMlSettings(configuration); commented out for reasons
         }
+
+        private void TestInserter()
+        {
+            var toolsList = new List<Tools>
+                {
+                    new Tools { Name = "Projector", Description = "Desc", Count = 1 }
+                };
+
+            var id = Guid.NewGuid();
+                var room = new MeetingRooms
+                {
+                    RoomRevNr = id,
+                    RoomName = "341",
+                    Capacity = 33,
+                    Availability = true,
+                    Equipment = toolsList
+                };
+            Console.WriteLine(room.ToJson());
+
+            MeetingRooms.InsertOne(room);
+
+        }
+
         public void SchemaCreator()
         {
             var requiredCollections = new List<string> { "MeetingRooms", "Reservations", "Reservers" };
@@ -67,14 +91,13 @@ namespace RoomRevAPI.Services
             { "$jsonSchema", new BsonDocument
                 {
                     { "bsonType", "object" },
-                    { "required", new BsonArray { "RoomRevNr", "Availability", "Capacity", "RoomName" } },
+                    { "required", new BsonArray { "Availability", "Capacity", "RoomName" } },
                     { "properties", new BsonDocument
                         {
-                            { "RoomRevNr", new BsonDocument { { "bsonType", "string" }, { "description", "'RoomRevNr' must be a String and is required" } } },
                             { "Availability", new BsonDocument { { "bsonType", "bool" }, { "description", "'Availability' must be a Boolean and is required" } } },
                             { "Capacity", new BsonDocument { { "bsonType", "int" }, { "description", "'Capacity' must be an Integer and is required" } } },
                             { "RoomName", new BsonDocument { { "bsonType", "string" }, { "description", "'RoomName' must be a String and is required" } } },
-                            { "Tools", new BsonDocument { { "bsonType", "array" }, { "description", "'Tools' must be an Array of Tool objects" } } }
+                            { "Equipment", new BsonDocument { { "bsonType", "array" }, { "description", "'Tools' must be an Array of Tool objects" } } }
                         }
                     }
                 }
@@ -86,10 +109,9 @@ namespace RoomRevAPI.Services
             { "$jsonSchema", new BsonDocument
                 {
                     { "bsonType", "object" },
-                    { "required", new BsonArray { "RevRoomMet", "RevNr", "RoomRevNr", "StartTime", "EndTime" } },
+                    { "required", new BsonArray { "revNr", "roomRevNr", "startTime", "endTime" } },
                     { "properties", new BsonDocument
                         {
-                            { "RevRoomMet", new BsonDocument { { "bsonType", "string" }, { "description", "'RevRoomMet' must be a String and is required" } } },
                             { "RevNr", new BsonDocument { { "bsonType", "string" }, { "description", "'RevNr' must be a String and is required" } } },
                             { "RoomRevNr", new BsonDocument { { "bsonType", "string" }, { "description", "'RoomRevNr' must be a String and is required" } } },
                             { "StartTime", new BsonDocument { { "bsonType", "date" }, { "description", "'StartTime' must be a Date and is required" } } },
@@ -106,10 +128,9 @@ namespace RoomRevAPI.Services
             { "$jsonSchema", new BsonDocument
                 {
                     { "bsonType", "object" },
-                    { "required", new BsonArray { "RevNr", "Name" } },
+                    { "required", new BsonArray { "name" } },
                     { "properties", new BsonDocument
                         {
-                            { "RevNr", new BsonDocument { { "bsonType", "string" }, { "description", "'RevNr' must be a String and is required" } } },
                             { "Name", new BsonDocument { { "bsonType", "string" }, { "description", "'Name' must be a String and is required" } } }
                         }
                     }

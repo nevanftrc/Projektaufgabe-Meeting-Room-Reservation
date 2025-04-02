@@ -8,8 +8,7 @@ namespace RoomRevAPI.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.String)]
-        [BsonElement("RevRoomMet")]
-        public Guid RevRoomMet { get; set; }
+        public Guid RevRoomMet { get; set; } = default(Guid);
         [BsonRepresentation(BsonType.String)]
         [BsonElement("RevNr")]
         public Guid RevNr { get; set; }

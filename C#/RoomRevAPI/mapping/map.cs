@@ -11,7 +11,8 @@
                 CreateMap<MeetingRooms, MeetingRoomDTO>().ReverseMap();
                 CreateMap<Reservations, ReservationDTO>().ReverseMap();
                 CreateMap<Reservers, ReserverDTO>().ReverseMap();
-            }
+                CreateMap<Tools, ToolDTO>().ReverseMap();
+        }
         }
     }
 
