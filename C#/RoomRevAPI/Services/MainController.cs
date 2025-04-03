@@ -100,7 +100,33 @@ namespace RoomRevAPI.Services
                             { "Availability", new BsonDocument { { "bsonType", "bool" }, { "description", "'Availability' must be a Boolean and is required" } } },
                             { "Capacity", new BsonDocument { { "bsonType", "int" }, { "minimum", 0 }, { "description", "'Capacity' must be an Integer and is required" } } },
                             { "RoomName", new BsonDocument { { "bsonType", "string" }, { "maxLength", 50 }, { "description", "'RoomName' must be a String and is required" } } },
-                            { "Equipment", new BsonDocument { { "bsonType", "array" }, { "description", "'Tools' must be an Array of Tool objects" } } }
+                            { "Equipment", new BsonDocument { { "bsonType", "array" }, { "description", "'Tools' must be an Array of Tool objects" },
+                            { "items", new BsonDocument
+                                {
+                                    { "bsonType", "object" },
+                                    { "properties", new BsonDocument
+                                        {
+                                            { "Name", new BsonDocument
+                                                {
+                                                    { "bsonType", "string" },
+                                                    { "maxLength", 50 },
+                                                    { "description", "'Name' must be a string" }
+                                                }
+                                            },
+                                            { "Count", new BsonDocument
+                                                {
+                                                    { "bsonType", "int" },
+                                                    { "minimum", 0 },  // ✅ Prevents negative values
+                                                    { "description", "'Count' must be a non-negative integer" }
+                                                }
+                                            }
+                                        }
+                                    }
+                            }
+                                }
+                            }
+                        }
+
                         }
                     }
                 }
