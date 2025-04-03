@@ -200,3 +200,7 @@ paket-files/
 
 # JetBrains Rider
 *.sln.iml
+
+#node
+
+/C#/RoomRevAPI/node_modules
