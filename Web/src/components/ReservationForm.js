@@ -21,7 +21,7 @@ function ReservationForm({ onSubmit, initialData, onCancel, existingReservations
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm({ ...form, [name]: String(value) });
   };
 
   const isOverlapping = () => {
@@ -55,12 +55,12 @@ function ReservationForm({ onSubmit, initialData, onCancel, existingReservations
     const endISO = new Date(form.endTime).toISOString();
 
     if (new Date(startISO) >= new Date(endISO)) {
-      alert("Start time must be before end time");
+      alert("The start time must be before the end time.");
       return;
     }
 
     if (isOverlapping()) {
-      alert("The selected time overlaps with another reservation for this room.");
+      alert("The schedule overlaps with another reservation for this room.");
       return;
     }
 
