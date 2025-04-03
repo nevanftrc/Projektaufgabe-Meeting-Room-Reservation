@@ -25,31 +25,34 @@ namespace RoomRevAPI.Services
             _configuration = configuration;
             //InitializeDatabase();   used for connection test
             SchemaCreator();
-            TestInserter();
+            //TestInserter();
             //DMlSettings(configuration); commented out for reasons
         }
+
+        private static readonly Guid StaticRoomId = Guid.NewGuid(); // ✅ Only generated once
 
         private void TestInserter()
         {
             var toolsList = new List<Tools>
-                {
-                    new Tools { Name = "Projector", Description = "Desc", Count = 1 }
-                };
+            {
+                new Tools { Name = "Projector", Description = "Desc", Count = 1 },
+                new Tools { Name = "Beamer", Description = "tesct", Count = 2 }
+            };
 
-            var id = Guid.NewGuid();
-                var room = new MeetingRooms
-                {
-                    RoomRevNr = id,
-                    RoomName = "341",
-                    Capacity = 33,
-                    Availability = true,
-                    Equipment = toolsList
-                };
+            var room = new MeetingRooms
+            {
+                RoomRevNr = StaticRoomId,  // ✅ Always uses the same GUID
+                RoomName = "341",
+                Capacity = 33,
+                Availability = true,
+                Equipment = toolsList
+            };
+
             Console.WriteLine(room.ToJson());
 
             MeetingRooms.InsertOne(room);
-
         }
+
 
         public void SchemaCreator()
         {
