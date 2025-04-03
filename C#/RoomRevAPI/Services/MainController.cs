@@ -112,7 +112,7 @@ namespace RoomRevAPI.Services
             { "$jsonSchema", new BsonDocument
                 {
                     { "bsonType", "object" },
-                    { "required", new BsonArray { "revNr", "roomRevNr", "startTime", "endTime" } },
+                    { "required", new BsonArray { "RevNr", "RoomRevNr", "StartTime", "EndTime" } },
                     { "properties", new BsonDocument
                         {
                             { "RevNr", new BsonDocument { { "bsonType", "string" }, { "description", "'RevNr' must be a String and is required" } } },
@@ -131,7 +131,7 @@ namespace RoomRevAPI.Services
             { "$jsonSchema", new BsonDocument
                 {
                     { "bsonType", "object" },
-                    { "required", new BsonArray { "name" } },
+                    { "required", new BsonArray { "Name" } },
                     { "properties", new BsonDocument
                         {
                             { "Name", new BsonDocument { { "bsonType", "string" }, { "description", "'Name' must be a String and is required" } } }
