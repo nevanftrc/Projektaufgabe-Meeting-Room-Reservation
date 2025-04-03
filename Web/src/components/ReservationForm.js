@@ -29,7 +29,7 @@ function ReservationForm({ onSubmit, initialData, onCancel, existingReservations
     const newEnd = new Date(form.endTime);
 
     return existingReservations.some((res) => {
-      if (res.revRoomMet === initialData?.revRoomMet) return false; // exclude current
+      if (res.revRoomMet === initialData?.revRoomMet) return false;
       if (res.roomRevNr !== form.roomRevNr) return false;
 
       const existingStart = new Date(res.startTime);
@@ -46,7 +46,15 @@ function ReservationForm({ onSubmit, initialData, onCancel, existingReservations
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (new Date(form.startTime) >= new Date(form.endTime)) {
+    if (!form.revNr || !form.roomRevNr || !form.startTime || !form.endTime) {
+      alert("All required fields must be completed.");
+      return;
+    }
+
+    const startISO = new Date(form.startTime).toISOString();
+    const endISO = new Date(form.endTime).toISOString();
+
+    if (new Date(startISO) >= new Date(endISO)) {
       alert("Start time must be before end time");
       return;
     }
@@ -56,7 +64,11 @@ function ReservationForm({ onSubmit, initialData, onCancel, existingReservations
       return;
     }
 
-    onSubmit(form);
+    onSubmit({
+      ...form,
+      startTime: startISO,
+      endTime: endISO
+    });
   };
 
   return (
