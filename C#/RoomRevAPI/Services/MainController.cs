@@ -98,8 +98,8 @@ namespace RoomRevAPI.Services
                     { "properties", new BsonDocument
                         {
                             { "Availability", new BsonDocument { { "bsonType", "bool" }, { "description", "'Availability' must be a Boolean and is required" } } },
-                            { "Capacity", new BsonDocument { { "bsonType", "int" }, { "description", "'Capacity' must be an Integer and is required" } } },
-                            { "RoomName", new BsonDocument { { "bsonType", "string" }, { "description", "'RoomName' must be a String and is required" } } },
+                            { "Capacity", new BsonDocument { { "bsonType", "int" }, { "minimum", 0 }, { "description", "'Capacity' must be an Integer and is required" } } },
+                            { "RoomName", new BsonDocument { { "bsonType", "string" }, { "maxLength", 50 }, { "description", "'RoomName' must be a String and is required" } } },
                             { "Equipment", new BsonDocument { { "bsonType", "array" }, { "description", "'Tools' must be an Array of Tool objects" } } }
                         }
                     }
@@ -119,7 +119,7 @@ namespace RoomRevAPI.Services
                             { "RoomRevNr", new BsonDocument { { "bsonType", "string" }, { "description", "'RoomRevNr' must be a String and is required" } } },
                             { "StartTime", new BsonDocument { { "bsonType", "date" }, { "description", "'StartTime' must be a Date and is required" } } },
                             { "EndTime", new BsonDocument { { "bsonType", "date" }, { "description", "'EndTime' must be a Date and is required" } } },
-                            { "Reason", new BsonDocument { { "bsonType", "string" }, { "maxLength", 50 }, { "description", "'Reason' must be a String" } } },
+                            { "Reason", new BsonDocument { { "bsonType", "string" }, { "maxLength", 100 }, { "description", "'Reason' must be a String" } } },
                         }
                     }
                 }
@@ -134,7 +134,7 @@ namespace RoomRevAPI.Services
                     { "required", new BsonArray { "Name" } },
                     { "properties", new BsonDocument
                         {
-                            { "Name", new BsonDocument { { "bsonType", "string" }, { "description", "'Name' must be a String and is required" } } }
+                            { "Name", new BsonDocument { { "bsonType", "string" }, { "maxLength", 50 }, { "description", "'Name' must be a String and is required" } } }
                         }
                     }
                 }
