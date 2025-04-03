@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getAllRooms } from "../api/meetingRooms";
 
 function ReservationForm({ onSubmit, initialData, onCancel, existingReservations }) {
   const [form, setForm] = useState({
@@ -8,6 +9,12 @@ function ReservationForm({ onSubmit, initialData, onCancel, existingReservations
     endTime: "",
     reason: ""
   });
+
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    getAllRooms().then(res => setRooms(res.data));
+  }, []);
 
   useEffect(() => {
     if (initialData) {
@@ -21,7 +28,7 @@ function ReservationForm({ onSubmit, initialData, onCancel, existingReservations
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: String(value) });
+    setForm({ ...form, [name]: value });
   };
 
   const isOverlapping = () => {
@@ -78,8 +85,15 @@ function ReservationForm({ onSubmit, initialData, onCancel, existingReservations
         <input name="revNr" value={form.revNr} onChange={handleChange} required />
       </div>
       <div>
-        <label>Room ID (roomRevNr): </label>
-        <input name="roomRevNr" value={form.roomRevNr} onChange={handleChange} required />
+        <label>Room: </label>
+        <select name="roomRevNr" value={form.roomRevNr} onChange={handleChange} required>
+          <option value="">-- Select a room --</option>
+          {rooms.map(room => (
+            <option key={room.roomRevNr} value={room.roomRevNr}>
+              {room.roomName} (Capacity: {room.capacity})
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <label>Start Time: </label>
