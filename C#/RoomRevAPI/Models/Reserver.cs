@@ -10,6 +10,7 @@ namespace RoomRevAPI.Models
         public Guid RevNr { get; set; } = Guid.NewGuid();
         [BsonElement("Name")]
         public string? Name { get; set; }
+        [BsonIgnore]
         public ICollection<Reservations> Reservations { get; set; } = new List<Reservations>();
     }
 }

@@ -23,9 +23,8 @@ namespace RoomRevAPI.Services
         {
             _database = database;
             _configuration = configuration;
-            //InitializeDatabase();   used for connection test
             SchemaCreator();
-            //TestInserter();
+            //TestInserter(); used to test
             //DMlSettings(configuration); commented out for reasons
         }
 
