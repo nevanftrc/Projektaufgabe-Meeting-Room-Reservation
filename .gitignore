@@ -203,3 +203,4 @@ paket-files/
 
 #node
 /C#/RoomRevAPI/node_modules
+/Web/node_modules
