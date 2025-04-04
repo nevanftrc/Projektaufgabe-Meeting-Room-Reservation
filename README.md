@@ -28,11 +28,11 @@ This API is built using **MongoDB, Node.js, and React**, with Webpack for module
     ```sh
     npm install -g webpack webpack-cli
     ```
-
-#### **Additional Setup**
+#### **Additionals**
 To verfiy access to the db start first the database since it will be genrated in there, change to mongo shell to see if it exists.
 ```sh
 mongosh use RoomRevDB
+ db.MeetingRooms.findOne()
 ```
 it should return empty since there are no documents inserted beforehand.
 
