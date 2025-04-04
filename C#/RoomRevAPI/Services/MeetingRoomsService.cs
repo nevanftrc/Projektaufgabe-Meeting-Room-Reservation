@@ -32,6 +32,7 @@ namespace RoomRevAPI.Services
 
         public async Task<bool> UpdateMeetingRoomAsync(Guid id, MeetingRooms room)
         {
+            room.RoomRevNr = id;
             var result = await _meetingRoomsCollection.ReplaceOneAsync(r => r.RoomRevNr == id, room);
             return result.ModifiedCount > 0;
         }
