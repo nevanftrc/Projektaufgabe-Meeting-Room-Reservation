@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomRevAPI", "RoomRevAPI.csproj", "{C1EECBFF-9FD2-49B8-8B01-ADD317EF921F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomRevUnitTester", "..\RoomRevUnitTester\RoomRevUnitTester.csproj", "{1F6EBD5A-F7B4-4ED9-A7C4-5EF5C761F42D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{C1EECBFF-9FD2-49B8-8B01-ADD317EF921F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1EECBFF-9FD2-49B8-8B01-ADD317EF921F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1EECBFF-9FD2-49B8-8B01-ADD317EF921F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F6EBD5A-F7B4-4ED9-A7C4-5EF5C761F42D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F6EBD5A-F7B4-4ED9-A7C4-5EF5C761F42D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F6EBD5A-F7B4-4ED9-A7C4-5EF5C761F42D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F6EBD5A-F7B4-4ED9-A7C4-5EF5C761F42D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
