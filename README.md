@@ -43,6 +43,10 @@ This project is an **API** that manages **Room Reservations**. The API provides 
 - **CRUD Operations**: The API supports **Create**, **Read**, **Update**, and **Delete** operations for room reservations, allowing users to manage their bookings seamlessly.
 - **Error Handling**: Proper error responses are provided for common issues, such as conflicting reservations or missing required fields.
 
+#### Trello
+
+[Link Hier](https://trello.com/b/0fa2mtvF/raum-rev)
+
 ---
 
 ### Requirements
@@ -97,6 +101,6 @@ npm install --save-dev css-loader
 ---
 
 ## Authors
-- PonixXD  
-- nevanftrc
-- FelipeOCar
+- PonixXD/Mia
+- nevanftrc/Nevan
+- FelipeOCar/Felipe
