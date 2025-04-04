@@ -25,9 +25,21 @@ namespace RoomRevAPI.Services
             return await _reservationsCollection.Find(r => r.RevRoomMet == id).FirstOrDefaultAsync();
         }
 
-        public async Task CreateReservationAsync(Reservations reservation)
+        public async Task<bool> CreateReservationAsync(Reservations reservation)
         {
+            try
+            {
+                reservation.IsTimeValid();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+
             await _reservationsCollection.InsertOneAsync(reservation);
+            return true;
+
         }
 
         public async Task<bool> UpdateReservationAsync(Guid id, Reservations reservation)

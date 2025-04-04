@@ -46,6 +46,15 @@ namespace RoomRevAPI.Controllers
             if (reservationDto == null)
                 return BadRequest(new { message = "Invalid reservation data" });
 
+            if (reservationDto.StartTime < DateTime.Now)
+            {
+                return BadRequest(new { message = "Start time cannot be in the past." });
+            }
+
+            if (reservationDto.StartTime >= reservationDto.EndTime)
+            {
+                return BadRequest(new { message = "Start time must be before end time." });
+            }
             var reservation = _mapper.Map<Reservations>(reservationDto);
             await _reservationsService.CreateReservationAsync(reservation);
 

@@ -26,5 +26,22 @@ namespace RoomRevAPI.Models
         public string? Reason { get; set; }
         [BsonIgnore]
         public ICollection<Reservers> Reservers { get; set; } = new List<Reservers>();
+
+        public bool IsTimeValid()
+        {
+            // Check if the start time is not in the past
+            if (StartTime < DateTime.Now)
+            {
+                throw new ArgumentException("Start time cannot be in the past.");
+            }
+
+            // Check if the start time is before the end time
+            if (StartTime >= EndTime)
+            {
+                throw new ArgumentException("Start time must be before end time.");
+            }
+
+            return true;
+        }
     }
 }

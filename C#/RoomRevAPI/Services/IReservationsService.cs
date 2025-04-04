@@ -9,7 +9,7 @@ namespace RoomRevAPI.Services
     {
         Task<List<Reservations>> GetAllReservationsAsync();
         Task<Reservations?> GetReservationByIdAsync(Guid id);
-        Task CreateReservationAsync(Reservations reservation);
+        Task<bool> CreateReservationAsync(Reservations reservation);
         Task<bool> UpdateReservationAsync(Guid id, Reservations reservation);
         Task<bool> DeleteReservationAsync(Guid id);
     }
