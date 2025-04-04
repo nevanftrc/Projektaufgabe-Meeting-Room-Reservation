@@ -21,21 +21,12 @@ module.exports = {
         exclude: /node_modules/,
         use: ["babel-loader"]
       },
-<<<<<<< HEAD
         {
           test: /\.css$/i,
           use: ["style-loader", "css-loader"],
         },
       ],
-    },
-=======
-      {
-        test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
-      },
-    ],
   },
->>>>>>> adf610e8f9ca722e3652c06ec8be069a86157d8a
   resolve: {
     extensions: [".js", ".jsx"]
   }
