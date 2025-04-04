@@ -49,7 +49,7 @@ function MeetingRoomForm({ onSubmit, initialData, onCancel }) {
       </div>
       <div>
         <label>Available: </label>
-        <input name="availability" type="checkbox" checked={form.availability} onChange={handleChange} />
+        <input className="avaible" name="availability" type="checkbox" checked={form.availability} onChange={handleChange} />
       </div>
 
       <div>
