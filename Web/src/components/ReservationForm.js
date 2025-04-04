@@ -28,8 +28,8 @@ function ReservationForm({ onSubmit, initialData, onCancel, existingReservations
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+    setForm({ ...form, [name]: value.trim() }); // Trim spaces/tabs
+};
 
   const isOverlapping = () => {
     const newStart = new Date(form.startTime);

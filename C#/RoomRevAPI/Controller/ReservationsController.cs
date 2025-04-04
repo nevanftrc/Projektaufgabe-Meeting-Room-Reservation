@@ -55,11 +55,18 @@ namespace RoomRevAPI.Controllers
             {
                 return BadRequest(new { message = "Start time must be before end time." });
             }
+
             var reservation = _mapper.Map<Reservations>(reservationDto);
-            await _reservationsService.CreateReservationAsync(reservation);
+            var result = await _reservationsService.CreateReservationAsync(reservation);
+
+            if (!result)
+            {
+                return BadRequest(new { message = "Failed to create reservation due to time restrictions." });
+            }
 
             return CreatedAtAction(nameof(GetReservation), new { id = reservation.RevRoomMet }, _mapper.Map<ReservationDTO>(reservation));
         }
+
 
         // ✅ Update a reservation
         [HttpPut("{id}")]
