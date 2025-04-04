@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllRooms, createRoom, updateRoom, deleteRoom } from "../api/meetingRooms";
 import MeetingRoomForm from "../components/MeetingRoomForm";
+import * as css from "../css/meetingRooms.css"
 
 function MeetingRoomsPage() {
   const [rooms, setRooms] = useState([]);
@@ -35,15 +36,16 @@ function MeetingRoomsPage() {
   };
 
   return (
-    <div>
-      <h2>Meeting Rooms</h2>
+    <div className="meeting-container">
+      <h2 className="meeting-title">Meeting Rooms</h2>
+      
       <MeetingRoomForm
         onSubmit={editingRoom ? handleUpdate : handleCreate}
         initialData={editingRoom}
         onCancel={() => setEditingRoom(null)}
       />
-
-      <table border="1" cellPadding="8">
+  
+      <table className="meeting-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -55,18 +57,20 @@ function MeetingRoomsPage() {
         </thead>
         <tbody>
           {rooms.map((room) => (
-            <tr key={room.roomRevNr}>
-              <td>{room.roomName}</td>
-              <td>{room.capacity}</td>
-              <td>{room.availability ? "✅" : "❌"}</td>
-              <td>
+            <tr key={room.roomRevNr} className="meeting-row">
+              <td className="meeting-name">{room.roomName}</td>
+              <td className="meeting-capacity">{room.capacity}</td>
+              <td className={`meeting-availability ${room.availability ? "available" : "not-available"}`}>
+                {room.availability ? "✅" : "❌"}
+              </td>
+              <td className="meeting-equipment">
                 {room.equipment?.map((eq, i) => (
                   <div key={i}>{eq.name} ({eq.count})</div>
                 ))}
               </td>
-              <td>
-                <button onClick={() => setEditingRoom(room)}>✏️</button>
-                <button onClick={() => handleDelete(room.roomRevNr)}>🗑️</button>
+              <td className="meeting-actions">
+                <button className="edit-btn" onClick={() => setEditingRoom(room)}>✏️</button>
+                <button className="delete-btn" onClick={() => handleDelete(room.roomRevNr)}>🗑️</button>
               </td>
             </tr>
           ))}
@@ -74,6 +78,6 @@ function MeetingRoomsPage() {
       </table>
     </div>
   );
-}
+}  
 
 export default MeetingRoomsPage;

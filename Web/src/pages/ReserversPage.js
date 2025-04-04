@@ -6,6 +6,7 @@ import {
   deleteReserver,
 } from "../api/reservers";
 import ReserverForm from "../components/ReserverForm";
+import * as css from "../css/reservers.css"
 
 function ReserversPage() {
   const [reservers, setReservers] = useState([]);
@@ -40,8 +41,8 @@ function ReserversPage() {
   };
 
   return (
-    <div>
-      <h2>Reservers</h2>
+    <div className="container">
+      <h2 className="title">Reservers</h2>
 
       <ReserverForm
         onSubmit={editingReserver ? handleUpdate : handleCreate}
@@ -49,22 +50,20 @@ function ReserversPage() {
         onCancel={() => setEditingReserver(null)}
       />
 
-      <table border="1" cellPadding="8">
+      <table className="table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>revNr</th>
-            <th>Actions</th>
+            <th className="tableHeader">Name</th>
+            <th className="tableHeader">Actions</th>
           </tr>
         </thead>
         <tbody>
           {reservers.map((r) => (
-            <tr key={r.revNr}>
-              <td>{r.name}</td>
-              <td>{r.revNr}</td>
-              <td>
-                <button onClick={() => setEditingReserver(r)}>✏️</button>
-                <button onClick={() => handleDelete(r.revNr)}>🗑️</button>
+            <tr key={r.revNr} className="tableRow">
+              <td className="tableCell">{r.name}</td>
+              <td className="tableCell">
+                <button className="editBtn" onClick={() => setEditingReserver(r)}>✏️</button>
+                <button className="deleteBtn" onClick={() => handleDelete(r.revNr)}>🗑️</button>
               </td>
             </tr>
           ))}

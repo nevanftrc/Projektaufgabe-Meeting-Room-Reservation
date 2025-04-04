@@ -1,55 +1,66 @@
 import React, { useEffect, useState } from "react";
 import { getAllReservations, createReservation, updateReservation, deleteReservation } from "../api/reservations";
+import { getAllRooms } from "../api/meetingRooms";
+import { getAllReservers } from "../api/reservers";
 import ReservationForm from "../components/ReservationForm";
+import * as css from "../css/reservation.css"
 
 function ReservationsPage() {
   const [reservations, setReservations] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const [reservers, setReservers] = useState([]);
   const [editingReservation, setEditingReservation] = useState(null);
 
-  const loadReservations = async () => {
-    const res = await getAllReservations();
-    setReservations(res.data);
+  const loadData = async () => {
+    const resReservations = await getAllReservations();
+    const resRooms = await getAllRooms();
+    const resReservers = await getAllReservers();
+    
+    setReservations(resReservations.data);
+    setRooms(resRooms.data);
+    setReservers(resReservers.data);
   };
 
   useEffect(() => {
-    loadReservations();
+    loadData();
   }, []);
 
   const handleCreate = async (reservation) => {
     await createReservation(reservation);
     setEditingReservation(null);
-    loadReservations();
+    loadData();
   };
 
   const handleUpdate = async (reservation) => {
     await updateReservation(reservation.revRoomMet, reservation);
     setEditingReservation(null);
-    loadReservations();
+    loadData();
   };
 
   const handleDelete = async (id) => {
     if (window.confirm("Delete this reservation?")) {
       await deleteReservation(id);
-      loadReservations();
+      loadData();
     }
   };
 
   return (
-    <div>
-      <h2>Reservations</h2>
-
+    <div className="reservations-container">
+      <h2 className="reservations-title">Reservations</h2>
+  
       <ReservationForm
         onSubmit={editingReservation ? handleUpdate : handleCreate}
         initialData={editingReservation}
         onCancel={() => setEditingReservation(null)}
         existingReservations={reservations}
+        reservers={reservers} // Pass available reservers
       />
-
-      <table border="1" cellPadding="8">
+  
+      <table className="reservations-table">
         <thead>
           <tr>
-            <th>Room ID</th>
-            <th>Reserver ID</th>
+            <th>Room</th>
+            <th>Reserver</th>
             <th>Start</th>
             <th>End</th>
             <th>Reason</th>
@@ -57,23 +68,28 @@ function ReservationsPage() {
           </tr>
         </thead>
         <tbody>
-          {reservations.map((r) => (
-            <tr key={r.revRoomMet}>
-              <td>{r.roomRevNr}</td>
-              <td>{r.revNr}</td>
-              <td>{new Date(r.startTime).toLocaleString()}</td>
-              <td>{new Date(r.endTime).toLocaleString()}</td>
-              <td>{r.reason}</td>
-              <td>
-                <button onClick={() => setEditingReservation(r)}>✏️</button>
-                <button onClick={() => handleDelete(r.revRoomMet)}>🗑️</button>
-              </td>
-            </tr>
-          ))}
+          {reservations.map((r) => {
+            const room = rooms.find((room) => room.roomRevNr === r.roomRevNr);
+            const reserver = reservers.find((reserver) => reserver.revNr === r.revNr);
+  
+            return (
+              <tr key={r.revRoomMet}>
+                <td>{room ? room.roomName : "Unknown Room"}</td>
+                <td>{reserver ? reserver.name : "Unknown Reserver"}</td>
+                <td>{new Date(r.startTime).toLocaleString()}</td>
+                <td>{new Date(r.endTime).toLocaleString()}</td>
+                <td>{r.reason}</td>
+                <td className="actions-column">
+                  <button className="edit-button" onClick={() => setEditingReservation(r)}>✏️</button>
+                  <button className="delete-button" onClick={() => handleDelete(r.revRoomMet)}>🗑️</button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
   );
-}
+}  
 
 export default ReservationsPage;
